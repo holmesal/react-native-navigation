@@ -5,6 +5,7 @@
 #import "RCCViewController.h"
 #import "RCCDrawerController.h"
 #import "RCCLightBox.h"
+#import "RCCFooter.h"
 #import <React/RCTConvert.h>
 #import "RCCTabBarController.h"
 #import "RCCTheSideBarManagerViewController.h"
@@ -313,6 +314,18 @@ RCT_EXPORT_METHOD(
                   modalDismissLightBox)
 {
     [RCCLightBox dismiss];
+}
+
+RCT_EXPORT_METHOD(
+showFooter:(NSDictionary*)params)
+{
+    [RCCFooter showWithParams:params];
+}
+
+RCT_EXPORT_METHOD(
+dismissFooter)
+{
+    [RCCFooter dismiss];
 }
 
 RCT_EXPORT_METHOD(

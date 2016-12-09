@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import Navigation from './../Navigation';
-import Controllers, {Modal, Notification} from './controllers';
+import Controllers, {Modal, Footer, Notification} from './controllers';
 const React = Controllers.hijackReact();
 const {
   ControllerRegistry,
@@ -355,6 +355,22 @@ function navigatorToggleTabs(navigator, params) {
   });
 }
 
+function navigatorToggleTabsFooterHidden(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  Controllers.TabBarControllerIOS(controllerID + '_tabs').setFooterHidden({
+    hidden: params.hidden,
+    height: params.height
+  });
+}
+
+function navigatorToggleFooter(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  Controllers.FooterControllerIOS(controllerID + '_footer').setHidden({
+    hidden: params.to == 'hidden',
+    animated: !(params.animated === false)
+  });
+}
+
 function navigatorSetTabBadge(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
   if (params.tabIndex || params.tabIndex === 0) {
@@ -498,6 +514,47 @@ function dismissLightBox(params) {
   Modal.dismissLightBox();
 }
 
+function showFooter(params) {
+  if (!params.screen) {
+    console.error('showFooter(params): params.screen is required');
+    return;
+  }
+  const controllerID = _.uniqueId('controllerID');
+  const navigatorID = controllerID + '_nav';
+  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const {
+      navigatorStyle,
+      navigatorButtons,
+      navigatorEventID
+      } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  const passProps = Object.assign({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+
+  params.navigationParams = {
+    screenInstanceID,
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID,
+    navigatorID
+  };
+
+  savePassProps(params);
+
+  Footer.showFooter({
+    component: params.screen,
+    passProps: passProps,
+    style: params.style
+  });
+}
+
+function dismissFooter(params) {
+  Footer.dismissFooter();
+  const controllerID = _.uniqueId('controllerID');
+
+}
+
 function showInAppNotification(params) {
   if (!params.screen) {
     console.error('showInAppNotification(params): params.screen is required');
@@ -590,6 +647,8 @@ export default {
   dismissAllModals,
   showLightBox,
   dismissLightBox,
+  showFooter,
+  dismissFooter,
   showInAppNotification,
   dismissInAppNotification,
   navigatorSetButtons,
@@ -598,6 +657,7 @@ export default {
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
+  navigatorToggleTabsFooterHidden,
   navigatorSetTabBadge,
   navigatorSwitchToTab,
   navigatorToggleNavBar,

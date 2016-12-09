@@ -238,6 +238,9 @@ var Controllers = {
       setHidden: function (params) {
         return RCCManager.TabBarControllerIOS(id, "setTabBarHidden", params);
       },
+      setFooterHidden: function (params) {
+        return RCCManager.TabBarControllerIOS(id, "setFooterHidden", params);
+      },
       setBadge: function (params) {
         return RCCManager.TabBarControllerIOS(id, "setBadge", params);
       },
@@ -245,6 +248,38 @@ var Controllers = {
         return RCCManager.TabBarControllerIOS(id, "switchTo", params);
       }
     };
+  },
+  //
+  //FooterControllerIOS: function (id) {
+  //  return {
+  //    setHidden: function (params) {
+  //      return RCCManager.FooterControllerIOS(id, "setFooterHidden", params);
+  //    }
+  //  };
+  //},
+
+  Footer: {
+    showFooter: function(params) {
+      params['style'] = Object.assign({}, params['style']);
+      _processProperties(params['style']);
+      RCCManager.showFooter(params);
+    },
+    dismissFooter: function() {
+      RCCManager.dismissFooter();
+    },
+    showController: function(appKey, animationType = 'slide-up', passProps = {}) {
+      var controller = _controllerRegistry[appKey];
+      if (controller === undefined) return;
+      var layout = controller.render();
+      _validateDrawerProps(layout);
+      RCCManager.showController(layout, animationType, passProps);
+    },
+    dismissController: function(animationType = 'slide-down') {
+      RCCManager.dismissController(animationType);
+    },
+    dismissAllControllers: function(animationType = 'slide-down') {
+      RCCManager.dismissAllControllers(animationType);
+    }
   },
 
   Modal: {

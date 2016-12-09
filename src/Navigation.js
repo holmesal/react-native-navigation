@@ -123,6 +123,14 @@ function dismissLightBox(params = {}) {
   return platformSpecific.dismissLightBox(params);
 }
 
+function showFooter(params = {}) {
+  return platformSpecific.showFooter(params);
+}
+
+function dismissFooter(params = {}) {
+  return platformSpecific.dismissFooter(params);
+}
+
 function showInAppNotification(params = {}) {
   return platformSpecific.showInAppNotification(params);
 }
@@ -167,6 +175,8 @@ export default {
   showSnackbar: showSnackbar,
   showLightBox: showLightBox,
   dismissLightBox: dismissLightBox,
+  showFooter: showFooter,
+  dismissFooter: dismissFooter,
   showInAppNotification: showInAppNotification,
   dismissInAppNotification: dismissInAppNotification,
   startTabBasedApp: startTabBasedApp,

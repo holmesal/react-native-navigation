@@ -34,6 +34,7 @@
 		D85083001CBCF8A800FDB961 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082C71CBCF42400FDB961 /* UIViewController+MMDrawerController.m */; };
 		D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D779971D04B7180050CFEA /* RCTHelpers.m */; };
 		D8E11C571CBD1F670018B644 /* RCCDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E11C561CBD1F670018B644 /* RCCDrawerController.m */; };
+		E240E28E1DFA88B8008FCED0 /* RCCFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = E240E28D1DFA88B8008FCED0 /* RCCFooter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -107,6 +108,8 @@
 		D8D779961D04B7180050CFEA /* RCTHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTHelpers.h; sourceTree = "<group>"; };
 		D8D779971D04B7180050CFEA /* RCTHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTHelpers.m; sourceTree = "<group>"; };
 		D8E11C561CBD1F670018B644 /* RCCDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDrawerController.m; sourceTree = "<group>"; };
+		E240E28B1DFA875A008FCED0 /* RCCFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCFooter.h; sourceTree = "<group>"; };
+		E240E28D1DFA88B8008FCED0 /* RCCFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCFooter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +215,8 @@
 				CC84A19C1C1A0C4E00B3A6A2 /* RCCViewController.m */,
 				D84813171C8C5EB700051BAF /* RCCLightBox.h */,
 				D84813181C8C5EB700051BAF /* RCCLightBox.m */,
+				E240E28B1DFA875A008FCED0 /* RCCFooter.h */,
+				E240E28D1DFA88B8008FCED0 /* RCCFooter.m */,
 				D800E8171CFED1DB004A187F /* RCCExternalViewControllerProtocol.h */,
 				D83514F41D29719A00D53758 /* RCCNotification.h */,
 				D83514F51D29719A00D53758 /* RCCNotification.m */,
@@ -303,6 +308,7 @@
 				26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */,
 				D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */,
 				D85082E81CBCF54200FDB961 /* SidebarLuvocracyAnimation.m in Sources */,
+				E240E28E1DFA88B8008FCED0 /* RCCFooter.m in Sources */,
 				D85082E31CBCF54200FDB961 /* SidebarAirbnbAnimation.m in Sources */,
 				D84813191C8C5EB700051BAF /* RCCLightBox.m in Sources */,
 				CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */,

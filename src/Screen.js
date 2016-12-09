@@ -60,6 +60,14 @@ class Navigator {
     return Navigation.dismissLightBox(params);
   }
 
+  showFooter(params = {}) {
+    return Navigation.showFooter(params);
+  }
+
+  dismissFooter(params = {}) {
+    return Navigation.dismissFooter(params);
+  }
+
   showInAppNotification(params = {}) {
     return Navigation.showInAppNotification(params);
   }
@@ -99,6 +107,18 @@ class Navigator {
   toggleTabs(params = {}) {
     return platformSpecific.navigatorToggleTabs(this, params);
   }
+
+  toggleTabsFooterHidden(params = {}) {
+    return platformSpecific.navigatorToggleTabsFooterHidden(this, params);
+  }
+
+  //toggleTabs(params = {}) {
+  //  return platformSpecific.navigatorToggleTabs(this, params);
+  //}
+
+  //toggleFooter(params = {}) {
+  //  return platformSpecific.navigatorToggleFooter(this, params);
+  //}
 
   toggleNavBar(params = {}) {
     return platformSpecific.navigatorToggleNavBar(this, params);

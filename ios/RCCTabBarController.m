@@ -222,6 +222,28 @@
     {
       viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
     }
+  if ([performAction isEqualToString:@"setFooterHidden"])
+  {
+    BOOL hidden = [actionParams[@"hidden"] boolValue];
+    [UIView animateWithDuration: 0.4
+                          delay: 0
+         usingSpringWithDamping: 0.8
+          initialSpringVelocity: 0
+                        options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
+                     animations:^()
+     {
+       CGFloat tabBarHeight = self.tabBar.frame.size.height;
+       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -[actionParams[@"height"] floatValue]);
+     }
+                     completion:^(BOOL finished)
+     {
+       if (completion != nil)
+       {
+         completion();
+       }
+     }];
+    return;
+  }
 
     if (viewController)
     {
