@@ -232,6 +232,13 @@
     {
       viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
     }
+
+    if (viewController)
+    {
+      [self setSelectedViewController:viewController];
+    }
+  }
+  
   if ([performAction isEqualToString:@"setFooterHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
@@ -243,7 +250,10 @@
                      animations:^()
      {
        CGFloat tabBarHeight = self.tabBar.frame.size.height;
-       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -[actionParams[@"height"] floatValue]);
+       float offset = hidden ? 0 : -[actionParams[@"height"] floatValue];
+//       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -70.0f);
+//       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, -400.0f) : CGAffineTransformMakeTranslation(0, -100.0f);
+       self.tabBar.frame = CGRectOffset(self.tabFrame, 0, offset);
      }
                      completion:^(BOOL finished)
      {
@@ -253,12 +263,6 @@
        }
      }];
     return;
-  }
-
-    if (viewController)
-    {
-      [self setSelectedViewController:viewController];
-    }
   }
 
   if ([performAction isEqualToString:@"setTabBarHidden"])
@@ -317,6 +321,7 @@
   CGRect tabFrame = self.tabBar.frame;
   tabFrame.size.height = kBarHeight;
   tabFrame.origin.y = self.view.frame.size.height - kBarHeight;
+  self.tabFrame = tabFrame;
   self.tabBar.frame = tabFrame;
 }
 
