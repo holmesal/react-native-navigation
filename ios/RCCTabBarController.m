@@ -130,10 +130,12 @@
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
     
-    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont fontWithName:@"AmericanTypewriter" size:20.0f]];
     if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
       unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
+    
+    [unselectedAttributes setValue:[UIFont fontWithName:@"StyreneBApp-Regular" size:11] forKey:NSFontAttributeName];
     
     [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
     ;
@@ -142,6 +144,8 @@
     if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
       selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
     }
+    
+    [selectedAttributes setValue:[UIFont fontWithName:@"StyreneBApp-Regular" size:11] forKey:NSFontAttributeName];
     
     [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
     // create badge
@@ -154,6 +158,12 @@
     {
       viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
     }
+    
+//    [viewController.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"StyreneBApp-Regular" size:11]} forState:UIControlStateNormal];
+    
+    [viewController.tabBarItem setTitlePositionAdjustment:UIOffsetMake(0.0f, -9.0f)];
+    
+    [viewController.tabBarItem setImageInsets:UIEdgeInsetsMake(-4.0f, 0, 4.0f, 0)];
 
     [viewControllers addObject:viewController];
   }
@@ -300,6 +310,14 @@
     UIViewController *topViewController = [navigationController topViewController];
     [RCCTabBarController sendScreenTabChangedEvent:topViewController];
   }
+}
+
+- (void)viewWillLayoutSubviews {
+  const CGFloat kBarHeight = 66;
+  CGRect tabFrame = self.tabBar.frame;
+  tabFrame.size.height = kBarHeight;
+  tabFrame.origin.y = self.view.frame.size.height - kBarHeight;
+  self.tabBar.frame = tabFrame;
 }
 
 
