@@ -242,6 +242,13 @@
   if ([performAction isEqualToString:@"setFooterHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    // If this action is emitted too early, self.tabFrame will not have been set, which can cause the width to be animated to 0 (or a really small number)
+    // This is bad because if the tab bar size is then set before the animation completes, it will be overwritten by the animation
+    // So the hacky solution is to not perform this animation until the tab bar height has been set at least once
+    CGRect frame = self.tabFrame;
+    if (frame.size.width < 1) return;
+    
+    // Do the animation
     [UIView animateWithDuration: 0.4
                           delay: 0
          usingSpringWithDamping: 0.8
@@ -252,7 +259,7 @@
        CGFloat tabBarHeight = self.tabBar.frame.size.height;
        float offset = hidden ? 0 : -[actionParams[@"height"] floatValue];
 //       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -70.0f);
-//       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, -400.0f) : CGAffineTransformMakeTranslation(0, -100.0f);
+       //self.tabBar.transform = CGAffineTransformMakeTranslation(0, offset);
        self.tabBar.frame = CGRectOffset(self.tabFrame, 0, offset);
      }
                      completion:^(BOOL finished)

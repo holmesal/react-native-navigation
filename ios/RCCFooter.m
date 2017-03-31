@@ -163,7 +163,7 @@ const NSInteger kFooterTag = 0x101010;
 //    }
     
     self.reactView.transform = CGAffineTransformMakeTranslation(0, height);
-//    self.reactView.alpha = 0.5f;
+    //self.reactView.alpha = 0.5f;
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^()
      {
          self.reactView.transform = CGAffineTransformIdentity;
