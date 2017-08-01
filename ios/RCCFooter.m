@@ -228,6 +228,8 @@ const NSInteger kFooterTag = 0x101010;
     UIWindow *window = [RCCFooter getWindow];
     if ([window viewWithTag:kFooterTag] != nil)
     {
+        // Already exists, just bring to front
+        [window bringSubviewToFront:[window viewWithTag:kFooterTag]];
         return;
     }
     
@@ -239,6 +241,7 @@ const NSInteger kFooterTag = 0x101010;
     RCCFooterView *footer = [[RCCFooterView alloc] initWithFrame:CGRectMake(0, screenHeight - height, [UIScreen mainScreen].bounds.size.width, height) params:params];
     footer.tag = kFooterTag;
     [window addSubview:footer];
+    [window bringSubviewToFront:footer];
     [footer showAnimated];
 }
 

@@ -261,6 +261,7 @@
 //       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -70.0f);
        //self.tabBar.transform = CGAffineTransformMakeTranslation(0, offset);
        self.tabBar.frame = CGRectOffset(self.tabFrame, 0, offset);
+//       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.tabBar.frame.size.height);
      }
                      completion:^(BOOL finished)
      {
