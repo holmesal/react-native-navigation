@@ -223,6 +223,19 @@ const NSInteger kFooterTag = 0x101010;
     return window;
 }
 
++(void)bringToFront
+{
+    UIWindow *window = [RCCFooter getWindow];
+    if ([window viewWithTag:kFooterTag] != nil)
+    {
+        // Already exists, just bring to front
+        [window bringSubviewToFront:[window viewWithTag:kFooterTag]];
+        return;
+    }else {
+        NSLog(@"Was asked to bring footer view to front but one did not exist");
+    }
+}
+
 +(void)showWithParams:(NSDictionary*)params
 {
     UIWindow *window = [RCCFooter getWindow];
