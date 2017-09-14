@@ -208,6 +208,7 @@ RCT_EXPORT_METHOD(
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSetRootController:layout animationType:animationType globalProps:globalProps];
+        [RCCFooter bringToFront];
     });
 }
 
@@ -254,6 +255,8 @@ RCT_EXPORT_METHOD(
          appDelegate.window.rootViewController = controller;
          [appDelegate.window makeKeyAndVisible];
          [presentedViewController dismissViewControllerAnimated:NO completion:nil];
+         
+         [RCCFooter bringToFront];
          
          if (animated)
          {
@@ -353,6 +356,8 @@ RCT_EXPORT_METHOD(
     [[RCCManagerModule lastModalPresenterViewController] presentViewController:controller
                                                                       animated:![animationType isEqualToString:@"none"]
                                                                     completion:^(){ resolve(nil); }];
+    
+    [RCCFooter bringToFront];
 }
 
 -(BOOL)viewControllerIsModal:(UIViewController*)viewController
