@@ -58,6 +58,9 @@
   self.delegate = self;
 
   self.tabBar.translucent = YES; // default
+  
+  // Initial frame
+  self.tabBar.frame = [self getFrameForMovedState:NO];
 
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
@@ -242,11 +245,8 @@
   if ([performAction isEqualToString:@"setFooterHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
-    // If this action is emitted too early, self.tabFrame will not have been set, which can cause the width to be animated to 0 (or a really small number)
-    // This is bad because if the tab bar size is then set before the animation completes, it will be overwritten by the animation
-    // So the hacky solution is to not perform this animation until the tab bar height has been set at least once
-    CGRect frame = self.tabFrame;
-    if (frame.size.width < 1) return;
+    NSLog(@"tabBar setFooterHidden: %s", hidden ? "true" : "false");
+    NSLog(@"tabBar frame (pre-animation): x: %f, y: %f, width: %f, height: %f", self.tabBar.frame.origin.x, self.tabBar.frame.origin.y, self.tabBar.frame.size.width, self.tabBar.frame.size.height);
     
     // Do the animation
     [UIView animateWithDuration: 0.4
@@ -256,15 +256,24 @@
                         options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
                      animations:^()
      {
-       CGFloat tabBarHeight = self.tabBar.frame.size.height;
-       float offset = hidden ? 0 : -[actionParams[@"height"] floatValue];
+       CGRect toFrame = [self getFrameForMovedState:!hidden];
+       NSLog(@"tabBar toFrame (target frame): x: %f, y: %f, width: %f, height: %f", toFrame.origin.x, toFrame.origin.y, toFrame.size.width, toFrame.size.height);
+
+//       CGFloat tabBarHeight = self.tabBar.frame.size.height;
+//       float offset = hidden ? 0 : -[actionParams[@"height"] floatValue];
+       self.tabBar.frame = toFrame;
+       NSLog(@"tabBar frame (during animation): x: %f, y: %f, width: %f, height: %f", self.tabBar.frame.origin.x, self.tabBar.frame.origin.y, self.tabBar.frame.size.width, self.tabBar.frame.size.height);
+       
+       
+       
+//       self.tabBar.transform = CGAffineTransformMakeTranslation(0, -70.0f);
+//       NSLog(@"tabBar transform: tx: %f, ty: %f", self.tabBar.transform.tx, self.tabBar.transform.ty);
 //       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -70.0f);
-       //self.tabBar.transform = CGAffineTransformMakeTranslation(0, offset);
-       self.tabBar.frame = CGRectOffset(self.tabFrame, 0, offset);
-//       self.tabBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.tabBar.frame.size.height);
      }
                      completion:^(BOOL finished)
      {
+//       NSLog(@"(completed): tabBar transform: tx: %f, ty: %f", self.tabBar.transform.tx, self.tabBar.transform.ty);
+       NSLog(@"tabBar frame (after animation): x: %f, y: %f, width: %f, height: %f", self.tabBar.frame.origin.x, self.tabBar.frame.origin.y, self.tabBar.frame.size.width, self.tabBar.frame.size.height);
        if (completion != nil)
        {
          completion();
@@ -276,6 +285,7 @@
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    NSLog(@"tabBar setTabBarHidden: %s", hidden ? "true" : "false");
     [UIView animateWithDuration: ([actionParams[@"animated"] boolValue] ? 0.45 : 0)
                           delay: 0
          usingSpringWithDamping: 0.75
@@ -298,6 +308,19 @@
   {
     completion();
   }
+}
+
+-(CGRect)getFrameForMovedState:(bool)isMoved {
+  float screenHeight = [UIScreen mainScreen].bounds.size.height;
+  float tabHeight = 66.0f;
+  float yDefault = screenHeight - tabHeight;
+  float yMoved = yDefault - 70.0f;
+  return CGRectMake(
+                    0.0f,
+                    isMoved ? yMoved : yDefault,
+                    [UIScreen mainScreen].bounds.size.width,
+                    tabHeight
+                    );
 }
 
 +(void)sendScreenTabChangedEvent:(UIViewController*)viewController {
@@ -325,12 +348,20 @@
 }
 
 - (void)viewWillLayoutSubviews {
+  // If the height isn't set here every time shit breaks for some reason
   const CGFloat kBarHeight = 66;
   CGRect tabFrame = self.tabBar.frame;
+  // do NOT set the Y here or it will fuck with the animation
   tabFrame.size.height = kBarHeight;
-  tabFrame.origin.y = self.view.frame.size.height - kBarHeight;
-  self.tabFrame = tabFrame;
+  tabFrame.size.width = [UIScreen mainScreen].bounds.size.width; // For some reason sometimes the width is 0
+  tabFrame.origin.x = 0;
   self.tabBar.frame = tabFrame;
+  
+  // old stuffs:
+//  tabFrame.origin.y = self.view.frame.size.height - kBarHeight;
+//  self.tabFrame = tabFrame;
+//  self.tabBar.frame = [self getFrameForMovedState:NO];
+  NSLog(@"viewWillLayoutSubviews tabBar frame: x: %f, y: %f, width: %f, height: %f", self.tabFrame.origin.x, self.tabFrame.origin.y, self.tabFrame.size.width, self.tabFrame.size.height);
 }
 
 
