@@ -14,6 +14,12 @@
 
 @end
 
+@interface RCCTabBarController ()
+
+@property (nonatomic)         BOOL movedState;
+
+@end
+
 @implementation RCCTabBarController
 
 
@@ -56,11 +62,10 @@
   if (!self) return nil;
 
   self.delegate = self;
+  
+  self.movedState = false;
 
   self.tabBar.translucent = YES; // default
-  
-  // Initial frame
-  self.tabBar.frame = [self getFrameForMovedState:NO];
 
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
@@ -175,6 +180,9 @@
   self.viewControllers = viewControllers;
   
   [self setRotation:props];
+  
+  // Initial frame
+  self.tabBar.frame = [self getFrameForMovedState:NO];
 
   return self;
 }
@@ -245,6 +253,7 @@
   if ([performAction isEqualToString:@"setFooterHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    self.movedState = !hidden;
     NSLog(@"tabBar setFooterHidden: %s", hidden ? "true" : "false");
     NSLog(@"tabBar frame (pre-animation): x: %f, y: %f, width: %f, height: %f", self.tabBar.frame.origin.x, self.tabBar.frame.origin.y, self.tabBar.frame.size.width, self.tabBar.frame.size.height);
     
@@ -312,6 +321,7 @@
 
 -(CGRect)getFrameForMovedState:(bool)isMoved {
   float screenHeight = [UIScreen mainScreen].bounds.size.height;
+  NSLog(@"getFrameForMovedState screen dims: width: %f, height: %f", [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
   float tabHeight = 66.0f;
   float yDefault = screenHeight - tabHeight;
   float yMoved = yDefault - 70.0f;
@@ -347,6 +357,12 @@
   }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  // Make damn sure the frame is where it should be
+  self.tabBar.frame = [self getFrameForMovedState:self.movedState];
+}
+
 - (void)viewWillLayoutSubviews {
   // If the height isn't set here every time shit breaks for some reason
   const CGFloat kBarHeight = 66;
@@ -356,6 +372,8 @@
   tabFrame.size.width = [UIScreen mainScreen].bounds.size.width; // For some reason sometimes the width is 0
   tabFrame.origin.x = 0;
   self.tabBar.frame = tabFrame;
+  
+  NSLog(@"viewWillLayoutSubviews screen dims: width: %f, height: %f", [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
   
   // old stuffs:
 //  tabFrame.origin.y = self.view.frame.size.height - kBarHeight;
