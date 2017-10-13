@@ -171,7 +171,10 @@
     
     [viewController.tabBarItem setTitlePositionAdjustment:UIOffsetMake(0.0f, -9.0f)];
     
-    [viewController.tabBarItem setImageInsets:UIEdgeInsetsMake(-4.0f, 0, 4.0f, 0)];
+    [viewController.tabBarItem setImageInsets:UIEdgeInsetsMake(4.0f, 0, -4.0f, 0)];
+    
+    [self.tabBarController.tabBar.layer setBorderWidth:1.0f];
+    [self.tabBarController.tabBar.layer setBorderColor:[UIColor colorWithRed:0.77 green:0.77 blue:0.77 alpha:1.0].CGColor];
 
     [viewControllers addObject:viewController];
   }
@@ -365,7 +368,7 @@
 
 - (void)viewWillLayoutSubviews {
   // If the height isn't set here every time shit breaks for some reason
-  const CGFloat kBarHeight = 66;
+  const CGFloat kBarHeight = 60;
   CGRect tabFrame = self.tabBar.frame;
   // do NOT set the Y here or it will fuck with the animation
   tabFrame.size.height = kBarHeight;
