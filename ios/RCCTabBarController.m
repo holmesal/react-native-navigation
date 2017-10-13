@@ -327,7 +327,7 @@
   NSLog(@"getFrameForMovedState screen dims: width: %f, height: %f", [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
   float tabHeight = 66.0f;
   float yDefault = screenHeight - tabHeight;
-  float yMoved = yDefault - 70.0f;
+  float yMoved = yDefault - 48.0f;
   return CGRectMake(
                     0.0f,
                     isMoved ? yMoved : yDefault,
